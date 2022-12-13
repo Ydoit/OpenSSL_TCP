@@ -29,19 +29,15 @@ if __name__ =='__main__':
     
     
     # 创建一个ssl上下文，参数表示双方支持最高协议版本
-    
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     
     # 该ssl需要对方提供证书
-    
     context.verify_mode=ssl.CERT_REQUIRED
     
     # 加载可信根的证书
-    
     context.load_verify_locations('F:/大学四年级/程序设计课程/代码/cert/ca.crt')
     
     # 加载自己的证书和私钥
-    
     context.load_cert_chain(certfile='F:/大学四年级/程序设计课程/代码/cert/server.crt',keyfile='F:/大学四年级/程序设计课程/代码/cert/server.key')
    
     # 创建一个套接字
