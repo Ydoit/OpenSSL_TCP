@@ -7,6 +7,9 @@ import binascii
 from pyDes import des,CBC,PAD_PKCS5
 # from io import BytesIO
 
+
+
+# des-cbc加密
 def des_encrypt(s, key='yzw12345'):
     secret_key = key
     iv = '12345678'      # 偏移量8位
@@ -14,7 +17,7 @@ def des_encrypt(s, key='yzw12345'):
     en = k.encrypt(s, padmode=PAD_PKCS5)
     return binascii.b2a_hex(en)
 
-
+# des-cbc解密
 def des_descrypt(s, key):
     secret_key = key
     iv = '12345678'      # 偏移量8位
@@ -22,6 +25,7 @@ def des_descrypt(s, key):
     de = k.decrypt(binascii.a2b_hex(s), padmode=PAD_PKCS5)
     return de
 
+# 从记录文本中读取信息
 def read_record():
     password=input('请输入聊天记录密码\n')
    
@@ -34,51 +38,59 @@ def read_record():
     print(record[2:len(record)-1])
     fp.close()
 
-        
+
+
+# 将聊天信息加密写入记录文本      
 def write_record(s):
     fp=open('record.txt','rb')
     old_s=fp.read()
     old_s=des_descrypt(old_s,'yzw12345')
-    # print(type(old_s))
+   
     
     old_s=str(old_s)
-    # print(type(old_s))
-    # print(type(s))
+  
     s=old_s[2:len(old_s)-1]+'\n'+s
     fp.close()
     fp=open('record.txt','wb')
-        # print(s)
+       
     es=des_encrypt(s=s)
-        # print(type(es))
-        # bytes_io=BytesIO(es)
+       
     fp.write(es)
     fp.close()
 
 
 
-
+# 与服务器建立双向验证的连接
 def sslConnect(serverIP,dPort):
     severname=serverIP
     serverPort=dPort
     
     # 创建一个ssl上下文，参数表示双方支持最高协议版本
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    
+    
     # 该ssl需要对方提供证书
     context.verify_mode=ssl.CERT_REQUIRED
+    
     # 加载可信根的证书
     context.load_verify_locations('F:/大学四年级/程序设计课程/代码/cert/ca.crt')
+    
     # 加载自己的证书和私钥
     context.load_cert_chain(certfile='F:/大学四年级/程序设计课程/代码/cert/client.crt',keyfile='F:/大学四年级/程序设计课程/代码/cert/client.key')
+    
     # 创建一个套接字
     sock=socket.socket()
+    
     # 将套接字与ssl绑定
     sslSocket=context.wrap_socket(sock,server_hostname=serverIP)
     
- 
     sslSocket.connect((serverIP,dPort))
         
-        # 打印证书信息
+    # 打印证书信息
     pprint.pprint(sslSocket.getpeercert())
+    
+    
+    
     print('已与服务器接通，请开始聊天')
     return sslSocket
 
@@ -136,8 +148,14 @@ def sendInfo(sslSocket,serverIP):
                 
                 
 if __name__ =='__main__':
+    
+    
+    
     serverIP='127.0.0.1'
     serverPort=int(12000)
+    
+    
+    
     sslSocket=sslConnect(serverIP=serverIP,dPort=serverPort)
     # print(sslSocket)
     client1_threading = threading.Thread(target=rcvInfo, args=(sslSocket,))
