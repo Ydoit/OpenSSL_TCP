@@ -35,10 +35,10 @@ if __name__ =='__main__':
     context.verify_mode=ssl.CERT_REQUIRED
     
     # 加载可信根的证书
-    context.load_verify_locations('F:/大学四年级/程序设计课程/代码/cert/ca.crt')
+    context.load_verify_locations('F:/大学四年级/程序设计课程/OpenSSL_TCP/cert/ca.crt')
     
     # 加载自己的证书和私钥
-    context.load_cert_chain(certfile='F:/大学四年级/程序设计课程/代码/cert/server.crt',keyfile='F:/大学四年级/程序设计课程/代码/cert/server.key')
+    context.load_cert_chain(certfile='F:/大学四年级/程序设计课程/OpenSSL_TCP/cert/server.crt',keyfile='F:/大学四年级/程序设计课程/OpenSSL_TCP/cert/server.key')
    
     # 创建一个套接字
     sock=socket.socket()
@@ -48,8 +48,9 @@ if __name__ =='__main__':
     
     sock,address=sock.accept()
     # 将套接字与ssl绑定
-    sslSocket=context.wrap_socket(sock,server_side=True)
     print('服务器已就绪')
+    sslSocket=context.wrap_socket(sock,server_side=True)
+    
     
     
     # 打印客户端证书

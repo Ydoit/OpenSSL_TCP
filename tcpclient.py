@@ -44,6 +44,7 @@ def read_record():
 def write_record(s):
     fp=open('record.txt','rb')
     old_s=fp.read()
+    
     old_s=des_descrypt(old_s,'yzw12345')
    
     
@@ -52,7 +53,7 @@ def write_record(s):
     s=old_s[2:len(old_s)-1]+'\n'+s
     fp.close()
     fp=open('record.txt','wb')
-       
+  
     es=des_encrypt(s=s)
        
     fp.write(es)
@@ -73,10 +74,10 @@ def sslConnect(serverIP,dPort):
     context.verify_mode=ssl.CERT_REQUIRED
     
     # 加载可信根的证书
-    context.load_verify_locations('F:/大学四年级/程序设计课程/代码/cert/ca.crt')
+    context.load_verify_locations('F:/大学四年级/程序设计课程/OpenSSL_TCP/cert/ca.crt')
     
     # 加载自己的证书和私钥
-    context.load_cert_chain(certfile='F:/大学四年级/程序设计课程/代码/cert/client.crt',keyfile='F:/大学四年级/程序设计课程/代码/cert/client.key')
+    context.load_cert_chain(certfile='F:/大学四年级/程序设计课程/OpenSSL_TCP/cert/client.crt',keyfile='F:/大学四年级/程序设计课程/OpenSSL_TCP/cert/client.key')
     
     # 创建一个套接字
     sock=socket.socket()
@@ -149,7 +150,11 @@ def sendInfo(sslSocket,serverIP):
                 
 if __name__ =='__main__':
     
-    
+    s='record\n'
+    s=des_encrypt(s)
+    fp=open('record.txt','wb')
+    fp.write(s)
+    fp.close()
     
     serverIP='127.0.0.1'
     serverPort=int(12000)
