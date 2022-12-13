@@ -114,6 +114,7 @@ def rcvInfo(sslSocket):
           
         return True
 
+# 向服务器发送信息
 def sendInfo(sslSocket,serverIP):
     if(sslSocket==False):
         return False
