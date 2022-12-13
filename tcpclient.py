@@ -83,7 +83,7 @@ def sslConnect(serverIP,dPort):
     return sslSocket
 
 
-
+# 接受服务器的信息
 
 def rcvInfo(sslSocket):
     

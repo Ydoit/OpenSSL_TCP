@@ -36,7 +36,7 @@ if __name__ =='__main__':
     # 创建一个套接字
     sock=socket.socket()
     sock.bind(('127.0.0.1',12000))
-    sock.listen(5)
+    sock.listen(1)
     
     print('服务器已就绪')
     sock,address=sock.accept()
